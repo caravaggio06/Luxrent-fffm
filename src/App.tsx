@@ -84,7 +84,7 @@ export default function App() {
           </form>
           <div className="bg-zinc-900/60 p-6 rounded-2xl border border-white/10">
             <div className="text-lg font-semibold mb-2">Direktkontakt</div>
-            <p className="text-sm text-zinc-300">Telefon: +49 176 72183329</p>
+            <p className="text-sm text-zinc-300">Telefon: +49 176 12345678</p>
             <p className="text-sm text-zinc-300">E-Mail: info@k-co.tech</p>
           </div>
         </section>

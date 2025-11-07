@@ -3,6 +3,7 @@ import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-mo
 import StatBar from "./StatBar";
 import PricePanel from "./PricePanel";
 import SoundButton from "./SoundButton";
+import VideoStage from "./VideoStage";
 
 type Car = {
   id: string; brand: string; model: string; year: number;
@@ -27,20 +28,14 @@ export default function CarSwitch({
     <section className="relative vh-100 isolate overflow-hidden">
       {/* VIDEO: Fullscreen, unter allen Overlays */}
       <div className="absolute inset-0 -z-10">
-        <AnimatePresence initial={false} mode="wait">
-          <motion.video
-            key={car.id}
-            className="absolute inset-0 w-full h-full object-cover"
-            src={car.media.video}
-            poster={car.media.poster}
-            autoPlay muted playsInline loop
-            initial={{ scale: 1.06, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1, transition: { duration: .9, ease: [0.2,0.8,0.2,1] } }}
-            exit={{ scale: 1.03, opacity: 0, transition: { duration: .5 } }}
-          />
-        </AnimatePresence>
+        {/* VIDEO-Layer */}
+        <div className="absolute inset-0 -z-10">
+          <VideoStage src={car.media.video} poster={car.media.poster} />
+          <div className="absolute inset-0" />
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,.55)_70%,rgba(0,0,0,.9)_100%)]" />
+        </div>
         {/* Vignette + Gradients */}
-        <div className="absolute inset-0 bg-black/40" />
+        <div className="absolute inset-0" />
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,.55)_70%,rgba(0,0,0,.9)_100%)]" />
       </div>
 

@@ -6,7 +6,7 @@ export default function PricePanel({ car }: { car: Car }) {
   return (
     <div className="grid grid-cols-3 gap-4 text-center">
       <div className="rounded-xl bg-zinc-900 p-4">
-        <div className="text-xs uppercase text-zinc-400">Tag</div>
+        <div className="text-xs uppercase text-zinc-400">Tag</div>y
         <div className="text-2xl font-semibold">€ {car.dailyPrice}</div>
       </div>
       <div className="rounded-xl bg-zinc-900 p-4">
