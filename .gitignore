@@ -12,3 +12,4 @@ pnpm-debug.log*
 .DS_Store
 # lockfiles (optional – wenn du reproduzierbare Builds nicht brauchst)
 # package-lock.json
+.aider*
