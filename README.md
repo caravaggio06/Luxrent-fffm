@@ -22,6 +22,29 @@ Fullscreen-Frontend für eine Luxuswagen-Vermietung. Fokus: Need-for-Speed-ähnl
 - Canvas-Sampling statt externer Color-Libs
 - Statisches Hosting (Nginx o. ä.)
 
+## Kurs-Checkliste (Sprint A – Kursanforderungen)
+
+- [x] Navigation mit `react-router-dom` (mind. 3 Pages)
+  - [x] Home (`/`)
+  - [x] Fleet (Master) (`/fleet`)
+  - [x] Detailansicht je Fahrzeug (`/cars/:id`)
+  - [x] Zusätzlich: CreateCar (`/create`), Terms (`/terms`), Contact (`/contact`)
+- [x] Master/Detail umgesetzt
+  - [x] Master: Grid aller Fahrzeuge (Poster + Key-Infos)
+  - [x] Detail: Fullscreen-VideoStage + HUD + Preise + Soundcheck
+- [x] Mind. 5 wiederverwendbare Components
+  - StartScreen, VideoStage, StatBar, PricePanel, SoundButton
+  - Zusätzlich: CarCard, Chip, HUDPanel
+- [x] Mind. 1 Custom Hook
+  - `useAccentFromPoster` (Canvas-Sampling; setzt CSS-Variablen)
+- [x] Formular zur Content-Erstellung mit Validierung
+  - CreateCar Page: neues Fahrzeug anlegen
+  - Validierung: Pflichtfelder + Zahlen > 0 + Media-Pfade (zod)
+- [x] Persistenz (Minimum): localStorage
+  - `src/lib/storage.ts`: `getUserCars/addUserCar`
+  - Merge `userCars` mit `cars.json` in Fleet/Detail
+  - Optional: `lastViewedCarId`
+
 ## Ordnerstruktur
 
 luxrental/
@@ -32,7 +55,20 @@ luxrental/
 │ ├─ App.tsx
 │ ├─ main.tsx
 │ ├─ hooks/useAccent.ts
+│ ├─ lib/
+│ │ ├─ storage.ts
+│ │ └─ cars.ts
+│ ├─ pages/
+│ │ ├─ HomePage.tsx
+│ │ ├─ FleetPage.tsx
+│ │ ├─ CarDetailPage.tsx
+│ │ ├─ CreateCarPage.tsx
+│ │ ├─ TermsPage.tsx
+│ │ └─ ContactPage.tsx
 │ └─ components/
+│ ├─ CarCard.tsx
+│ ├─ Chip.tsx
+│ ├─ HUDPanel.tsx
 │ ├─ CarSwitch.tsx
 │ ├─ StartScreen.tsx
 │ ├─ StatBar.tsx
