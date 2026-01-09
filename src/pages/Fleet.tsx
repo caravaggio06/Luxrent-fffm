@@ -104,6 +104,12 @@ export default function Fleet() {
       <div className="text-zinc-300 uppercase text-xs tracking-wider">Fleet</div>
       <h1 className="mt-2 text-3xl md:text-4xl font-bold">Fahrzeuge</h1>
 
+      {import.meta.env.DEV ? (
+        <div className="mt-2 text-xs text-zinc-400">
+          JSON: {jsonCars.length} | Firestore: {fsCars.length} | Merged: {cars.length}
+        </div>
+      ) : null}
+
       {cars.length === 0 ? (
         <div className="mt-8 text-zinc-300">Keine Fahrzeuge gefunden.</div>
       ) : (

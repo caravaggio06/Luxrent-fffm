@@ -6,6 +6,7 @@ import CarDetailPage from "./pages/CarDetailPage";
 import CreateCarPage from "./pages/CreateCarPage";
 import TermsPage from "./pages/TermsPage";
 import ContactPage from "./pages/ContactPage";
+import Debug from "./pages/Debug";
 
 function NavItem({ to, children }: { to: string; children: React.ReactNode }) {
   return (
@@ -102,6 +103,18 @@ export default function App() {
           </Layout>
         }
       />
+
+      {import.meta.env.DEV ? (
+        <Route
+          path="/debug"
+          element={
+            <Layout>
+              <Debug />
+            </Layout>
+          }
+        />
+      ) : null}
+
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
