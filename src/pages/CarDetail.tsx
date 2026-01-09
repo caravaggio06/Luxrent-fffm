@@ -32,7 +32,7 @@ function mergeCars(baseCars: Car[], fsCars: FsCar[]): Car[] {
 
   const extras = fsCars
     .filter((c) => !baseIds.has(c.id))
-    .map((c) => ({ ...(c as any) } as Car);
+    .map((c) => ({ ...(c as any) } as Car));
 
   return [...mergedBase, ...extras];
 }
@@ -70,6 +70,7 @@ export default function CarDetail() {
       try {
         const [base, remote] = await Promise.all([fetchJsonCars(), fsListCars()]);
         if (!alive) return;
+
         setJsonCars(base);
         setFsCars(remote);
       } catch (e) {
@@ -170,7 +171,11 @@ export default function CarDetail() {
                 alt={`${car.brand} ${car.model}`}
                 className="w-full h-full object-cover"
               />
-            ) : null}
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-xs text-zinc-400">
+                Kein Poster verfügbar
+              </div>
+            )}
           </div>
           <div className="p-4 text-sm text-zinc-300">
             {car.year} • {car.drivetrain} • {car.gearbox} • {car.consumptionL100} l/100km

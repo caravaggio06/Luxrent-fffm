@@ -45,6 +45,8 @@ async function fetchJsonCars(): Promise<Car[]> {
 export default function Fleet() {
   const [jsonCars, setJsonCars] = useState<Car[]>([]);
   const [fsCars, setFsCars] = useState<FsCar[]>([]);
+  const [cars, setCars] = useState<Car[]>([]);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -58,8 +60,12 @@ export default function Fleet() {
       try {
         const [base, remote] = await Promise.all([fetchJsonCars(), fsListCars()]);
         if (!alive) return;
+
+        const merged = mergeCars(base, remote);
+
         setJsonCars(base);
         setFsCars(remote);
+        setCars(merged);
       } catch (e) {
         if (!alive) return;
         setError(e instanceof Error ? e.message : "Unbekannter Fehler");
@@ -75,7 +81,9 @@ export default function Fleet() {
     };
   }, []);
 
-  const cars = useMemo(() => mergeCars(jsonCars, fsCars), [jsonCars, fsCars]);
+  // Nur für DEV-Badge/Debug: falls cars aus irgendeinem Grund leer ist, aber json/fs da sind,
+  // zeigt das Badge trotzdem konsistente Zahlen.
+  const mergedCount = useMemo(() => mergeCars(jsonCars, fsCars).length, [jsonCars, fsCars]);
 
   if (loading) {
     return (
@@ -106,7 +114,7 @@ export default function Fleet() {
 
       {import.meta.env.DEV ? (
         <div className="mt-2 text-xs text-zinc-400">
-          JSON: {jsonCars.length} | Firestore: {fsCars.length} | Merged: {cars.length}
+          JSON: {jsonCars.length} | Firestore: {fsCars.length} | Merged: {mergedCount}
         </div>
       ) : null}
 
@@ -128,7 +136,11 @@ export default function Fleet() {
                     className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
                     loading="lazy"
                   />
-                ) : null}
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-xs text-zinc-400">
+                    Kein Poster verfügbar
+                  </div>
+                )}
               </div>
               <div className="p-4 space-y-2">
                 <div className="font-semibold">
