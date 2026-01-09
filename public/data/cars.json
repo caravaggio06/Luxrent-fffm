@@ -14,7 +14,7 @@
     "gearbox": "Auto",
     "consumptionL100": 23.9,
     "media": {
-      "poster": "/images/lambo-huracan-sto-poster.jpg",
+      "poster": "/images/lambo-huracan-sto.webp",
       "video": "/videos/lambo-huracan-sto.mp4",
       "audio": "/audio/lambo-huracan-sto.mp3"
     }
@@ -34,7 +34,7 @@
     "gearbox": "Auto",
     "consumptionL100": 28.6,
     "media": {
-      "poster": "/images/ferrari-296-gtb-poster.jpg",
+      "poster": "/images/ferrari.jpg",
       "video": "/videos/ferrari-296-gtb.mp4",
       "audio": "/audio/ferrari-296-gtb.mp3"
     }

@@ -13,3 +13,4 @@ pnpm-debug.log*
 # lockfiles (optional – wenn du reproduzierbare Builds nicht brauchst)
 # package-lock.json
 .aider*
+.env.local
