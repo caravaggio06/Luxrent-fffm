@@ -21,10 +21,19 @@ type JsonCar = {
 type Car = JsonCar;
 
 function mergeCars(baseCars: Car[], fsCars: FsCar[]): Car[] {
-  const byId = new Map<string, Car>();
-  for (const c of baseCars) byId.set(c.id, c);
-  for (const c of fsCars) byId.set(c.id, { ...(byId.get(c.id) ?? ({} as Car)), ...(c as any) });
-  return Array.from(byId.values());
+  const baseIds = new Set(baseCars.map((c) => c.id));
+  const remoteById = new Map(fsCars.map((c) => [c.id, c] as const));
+
+  const mergedBase = baseCars.map((c) => {
+    const remote = remoteById.get(c.id);
+    return remote ? ({ ...c, ...(remote as any) } as Car) : c;
+  });
+
+  const extras = fsCars
+    .filter((c) => !baseIds.has(c.id))
+    .map((c) => ({ ...(c as any) } as Car));
+
+  return [...mergedBase, ...extras];
 }
 
 async function fetchJsonCars(): Promise<Car[]> {
