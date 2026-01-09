@@ -1,25 +1,5 @@
 [
   {
-    "id": "ferrari-296-gtb",
-    "brand": "Ferrari",
-    "model": "296 GTB",
-    "year": 2024,
-    "dailyPrice": 1590,
-    "weekendPrice": 3990,
-    "deposit": 5000,
-    "powerHp": 830,
-    "accel0to100": 2.9,
-    "topspeedKmh": 330,
-    "drivetrain": "RWD",
-    "gearbox": "Auto",
-    "consumptionL100": 8.6,
-    "media": {
-      "poster": "/images/ferrari-296-gtb-poster.jpg",
-      "video": "/videos/ferrari-296-gtb.mp4",
-      "audio": "/audio/ferrari-296-gtb.mp3"
-    }
-  },
-  {
     "id": "lambo-huracan-sto",
     "brand": "Lamborghini",
     "model": "Huracán STO",
@@ -32,11 +12,31 @@
     "topspeedKmh": 310,
     "drivetrain": "RWD",
     "gearbox": "Auto",
-    "consumptionL100": 13.9,
+    "consumptionL100": 23.9,
     "media": {
       "poster": "/images/lambo-huracan-sto-poster.jpg",
       "video": "/videos/lambo-huracan-sto.mp4",
       "audio": "/audio/lambo-huracan-sto.mp3"
+    }
+  },
+  {
+    "id": "ferrari-296-gtb",
+    "brand": "Ferrari",
+    "model": "296 GTB",
+    "year": 2024,
+    "dailyPrice": 1590,
+    "weekendPrice": 3990,
+    "deposit": 5000,
+    "powerHp": 830,
+    "accel0to100": 2.9,
+    "topspeedKmh": 330,
+    "drivetrain": "RWD",
+    "gearbox": "Auto",
+    "consumptionL100": 28.6,
+    "media": {
+      "poster": "/images/ferrari-296-gtb-poster.jpg",
+      "video": "/videos/ferrari-296-gtb.mp4",
+      "audio": "/audio/ferrari-296-gtb.mp3"
     }
   }
 ]
