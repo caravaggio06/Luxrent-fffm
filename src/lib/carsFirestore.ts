@@ -32,7 +32,7 @@ const carsCol = collection(db, "cars");
 export async function fsListCars(): Promise<Car[]> {
   const q = query(carsCol, orderBy("createdAt", "desc"));
   const snap = await getDocs(q);
-  return snap.docs.map(d => ({ id: d.id, ...(d.data() as any) })) as Car[];
+  return snap.docs.map((d) => ({ id: d.id, ...(d.data() as any) })) as Car[];
 }
 
 export async function fsGetCar(id: string): Promise<Car | null> {

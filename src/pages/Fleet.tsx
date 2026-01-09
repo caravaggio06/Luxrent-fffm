@@ -1,50 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
-import { fsListCars, type Car as FsCar } from "../lib/carsFirestore";
-
-type JsonCar = {
-  id: string;
-  brand: string;
-  model: string;
-  year: number;
-  dailyPrice: number;
-  weekendPrice: number;
-  deposit: number;
-  powerHp: number;
-  accel0to100: number;
-  topspeedKmh: number;
-  consumptionL100: number;
-  drivetrain: string;
-  gearbox: string;
-  media: { poster?: string; video?: string; audio?: string };
-};
-
-type Car = JsonCar;
-
-function mergeCars(baseCars: Car[], fsCars: FsCar[]): Car[] {
-  const baseIds = new Set(baseCars.map((c) => c.id));
-  const remoteById = new Map(fsCars.map((c) => [c.id, c] as const));
-
-  const mergedBase = baseCars.map((c) => {
-    const remote = remoteById.get(c.id);
-    return remote ? ({ ...c, ...(remote as any) } as Car) : c;
-  });
-
-  const extras = fsCars
-    .filter((c) => !baseIds.has(c.id))
-    .map((c) => ({ ...(c as any) } as Car));
-
-  return [...mergedBase, ...extras];
-}
-
-async function fetchJsonCars(): Promise<Car[]> {
-  const r = await fetch("/data/cars.json");
-  if (!r.ok) throw new Error("cars.json konnte nicht geladen werden");
-  return (await r.json()) as Car[];
-}
+import { useEffect, useState } from "react";
+import { loadCarsMergedWithSources } from "../lib/cars";
+import type { Car } from "../lib/storage";
 
 export default function Fleet() {
-  const [jsonCars, setJsonCars] = useState<Car[]>([]);
-  const [fsCars, setFsCars] = useState<FsCar[]>([]);
   const [cars, setCars] = useState<Car[]>([]);
 
   const [loading, setLoading] = useState(true);
@@ -58,13 +16,8 @@ export default function Fleet() {
       setError(null);
 
       try {
-        const [base, remote] = await Promise.all([fetchJsonCars(), fsListCars()]);
+        const { merged } = await loadCarsMergedWithSources();
         if (!alive) return;
-
-        const merged = mergeCars(base, remote);
-
-        setJsonCars(base);
-        setFsCars(remote);
         setCars(merged);
       } catch (e) {
         if (!alive) return;
@@ -80,10 +33,6 @@ export default function Fleet() {
       alive = false;
     };
   }, []);
-
-  // Nur für DEV-Badge/Debug: falls cars aus irgendeinem Grund leer ist, aber json/fs da sind,
-  // zeigt das Badge trotzdem konsistente Zahlen.
-  const mergedCount = useMemo(() => mergeCars(jsonCars, fsCars).length, [jsonCars, fsCars]);
 
   if (loading) {
     return (
@@ -111,12 +60,6 @@ export default function Fleet() {
     <section className="max-w-7xl mx-auto px-4 pt-28 pb-16">
       <div className="text-zinc-300 uppercase text-xs tracking-wider">Fleet</div>
       <h1 className="mt-2 text-3xl md:text-4xl font-bold">Fahrzeuge</h1>
-
-      {import.meta.env.DEV ? (
-        <div className="mt-2 text-xs text-zinc-400">
-          JSON: {jsonCars.length} | Firestore: {fsCars.length} | Merged: {mergedCount}
-        </div>
-      ) : null}
 
       {cars.length === 0 ? (
         <div className="mt-8 text-zinc-300">Keine Fahrzeuge gefunden.</div>
