@@ -1,9 +1,13 @@
 import type { Car } from "./storage";
 
-type StrapiEntity<T> = {
+type StrapiEntityV4<T> = {
   id: number;
   attributes: T;
 };
+
+type StrapiEntityV5<T> = { id: number; documentId?: string } & T;
+
+type StrapiEntity<T> = StrapiEntityV4<T> | StrapiEntityV5<T>;
 
 type StrapiListResponse<T> = {
   data: Array<StrapiEntity<T>> | null;
@@ -40,6 +44,11 @@ type StrapiCarAttributes = {
     | null;
 };
 
+function getEntityData<T>(entity: StrapiEntity<T>): T {
+  const a = "attributes" in entity && entity.attributes ? entity.attributes : (entity as any);
+  return a as T;
+}
+
 function getStrapiBaseUrl(): string {
   const raw = import.meta.env.VITE_STRAPI_URL as string | undefined;
   return (raw && raw.trim().length ? raw.trim() : "http://192.168.0.206:1337").replace(/\/+$/, "");
@@ -59,7 +68,7 @@ function toString(v: unknown, fallback = ""): string {
 }
 
 function mapStrapiCarToCar(entity: StrapiEntity<StrapiCarAttributes>): Car {
-  const a = entity.attributes ?? ({} as StrapiCarAttributes);
+  const a = getEntityData(entity) ?? ({} as StrapiCarAttributes);
 
   const slug = a.slug && a.slug.trim().length ? a.slug.trim() : String(entity.id);
 
@@ -89,9 +98,9 @@ function mapStrapiCarToCar(entity: StrapiEntity<StrapiCarAttributes>): Car {
     gearbox: toString(a.gearbox, ""),
 
     media: {
-      poster: a.media?.poster ?? "",
-      video: a.media?.video ?? "",
-      audio: a.media?.audio ?? "",
+      poster: toString(a.media?.poster ?? "", ""),
+      video: toString(a.media?.video ?? "", ""),
+      audio: toString(a.media?.audio ?? "", ""),
     },
   } as Car;
 }
@@ -109,7 +118,7 @@ async function parsePossiblyHtmlWrappedJson<T>(r: Response): Promise<T> {
 
 export async function strapiListCars(): Promise<Car[]> {
   const base = getStrapiBaseUrl();
-  const url = `${base}/api/cars`;
+  const url = `${base}/api/cars?populate=*`;
 
   const r = await fetch(url);
   if (!r.ok) {
