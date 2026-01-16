@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { loadCarsMergedWithSources } from "../lib/cars";
+import { strapiListCars } from "../lib/carsStrapi";
 import type { Car } from "../lib/storage";
 
 export default function Fleet() {
@@ -16,11 +16,12 @@ export default function Fleet() {
       setError(null);
 
       try {
-        const { merged } = await loadCarsMergedWithSources();
+        const list = await strapiListCars();
         if (!alive) return;
-        setCars(merged);
+        setCars(list);
       } catch (e) {
         if (!alive) return;
+        setCars([]);
         setError(e instanceof Error ? e.message : "Unbekannter Fehler");
       } finally {
         if (!alive) return;
@@ -34,36 +35,24 @@ export default function Fleet() {
     };
   }, []);
 
-  if (loading) {
-    return (
-      <section className="max-w-7xl mx-auto px-4 pt-28 pb-16">
-        <div className="text-zinc-300 uppercase text-xs tracking-wider">Fleet</div>
-        <h1 className="mt-2 text-3xl md:text-4xl font-bold">Fahrzeuge</h1>
-        <div className="mt-8 text-zinc-300">Lade Fahrzeuge…</div>
-      </section>
-    );
-  }
-
-  if (error) {
-    return (
-      <section className="max-w-7xl mx-auto px-4 pt-28 pb-16">
-        <div className="text-zinc-300 uppercase text-xs tracking-wider">Fleet</div>
-        <h1 className="mt-2 text-3xl md:text-4xl font-bold">Fahrzeuge</h1>
-        <div className="mt-8 rounded-xl border border-red-500/30 bg-red-500/10 p-4 text-red-200">
-          Fehler: {error}
-        </div>
-      </section>
-    );
-  }
-
   return (
     <section className="max-w-7xl mx-auto px-4 pt-28 pb-16">
       <div className="text-zinc-300 uppercase text-xs tracking-wider">Fleet</div>
       <h1 className="mt-2 text-3xl md:text-4xl font-bold">Fahrzeuge</h1>
 
-      {cars.length === 0 ? (
+      {loading ? <div className="mt-8 text-zinc-300">Lade Fahrzeuge…</div> : null}
+
+      {error ? (
+        <div className="mt-8 rounded-xl border border-red-500/30 bg-red-500/10 p-4 text-red-200">
+          Fehler: {error}
+        </div>
+      ) : null}
+
+      {!loading && !error && cars.length === 0 ? (
         <div className="mt-8 text-zinc-300">Keine Fahrzeuge gefunden.</div>
-      ) : (
+      ) : null}
+
+      {!error && cars.length > 0 ? (
         <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {cars.map((c) => (
             <a
@@ -99,7 +88,7 @@ export default function Fleet() {
             </a>
           ))}
         </div>
-      )}
+      ) : null}
     </section>
   );
 }

@@ -109,7 +109,7 @@ async function parsePossiblyHtmlWrappedJson<T>(r: Response): Promise<T> {
 
 export async function strapiListCars(): Promise<Car[]> {
   const base = getStrapiBaseUrl();
-  const url = `${base}/api/cars?populate=*`;
+  const url = `${base}/api/cars`;
 
   const r = await fetch(url);
   if (!r.ok) {
