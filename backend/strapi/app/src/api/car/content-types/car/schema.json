@@ -1,0 +1,64 @@
+{
+  "kind": "collectionType",
+  "collectionName": "cars",
+  "info": {
+    "singularName": "car",
+    "pluralName": "cars",
+    "displayName": "Car",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "slug": {
+      "type": "uid",
+      "required": true,
+      "unique": true
+    },
+    "brand": {
+      "type": "string",
+      "required": true
+    },
+    "model": {
+      "type": "string",
+      "required": true
+    },
+    "year": {
+      "type": "integer"
+    },
+    "dailyPrice": {
+      "type": "integer"
+    },
+    "weekendPrice": {
+      "type": "integer"
+    },
+    "deposit": {
+      "type": "integer"
+    },
+    "powerHp": {
+      "type": "integer"
+    },
+    "accelTo100": {
+      "type": "decimal"
+    },
+    "topspeedKmh": {
+      "type": "integer"
+    },
+    "consumptionL100": {
+      "type": "decimal"
+    },
+    "drivetrain": {
+      "type": "string"
+    },
+    "gearbox": {
+      "type": "string"
+    },
+    "media": {
+      "type": "component",
+      "repeatable": false,
+      "component": "car.media"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_car_media",
+  "info": {
+    "displayName": "media",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "poster": {
+      "type": "string"
+    },
+    "video": {
+      "type": "string"
+    },
+    "audio": {
+      "type": "string"
+    }
+  }
+}
