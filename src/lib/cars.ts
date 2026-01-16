@@ -1,6 +1,6 @@
 import type { Car } from "./storage";
 import { getUserCars } from "./storage";
-import { fsListCars } from "./carsFirestore";
+import { strapiListCars } from "./carsStrapi";
 
 export async function fetchBaseCars(): Promise<Car[]> {
   const r = await fetch("/data/cars.json");
@@ -66,7 +66,7 @@ export async function loadCarsMergedWithSources(): Promise<{
   local: Car[];
   merged: Car[];
 }> {
-  const [base, remote] = await Promise.all([fetchBaseCars(), fsListCars()]);
+  const [base, remote] = await Promise.all([fetchBaseCars(), strapiListCars()]);
   const local = getUserCars();
 
   const merged = mergeCarsWithPrecedence({

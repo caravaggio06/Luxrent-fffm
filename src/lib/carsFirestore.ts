@@ -1,15 +1,3 @@
-import { db } from "./firebase";
-import {
-  collection,
-  doc,
-  getDocs,
-  getDoc,
-  orderBy,
-  query,
-  setDoc,
-  serverTimestamp,
-} from "firebase/firestore";
-
 export type Car = {
   id: string;
   brand: string;
@@ -27,22 +15,14 @@ export type Car = {
   media: { poster?: string; video?: string; audio?: string };
 };
 
-const carsCol = collection(db, "cars");
-
 export async function fsListCars(): Promise<Car[]> {
-  const q = query(carsCol, orderBy("createdAt", "desc"));
-  const snap = await getDocs(q);
-  return snap.docs.map((d) => ({ id: d.id, ...(d.data() as any) })) as Car[];
+  throw new Error("Firestore wurde entfernt. Bitte Strapi verwenden.");
 }
 
-export async function fsGetCar(id: string): Promise<Car | null> {
-  const ref = doc(db, "cars", id);
-  const snap = await getDoc(ref);
-  if (!snap.exists()) return null;
-  return { id: snap.id, ...(snap.data() as any) } as Car;
+export async function fsGetCar(_id: string): Promise<Car | null> {
+  throw new Error("Firestore wurde entfernt. Bitte Strapi verwenden.");
 }
 
-export async function fsUpsertCar(car: Car): Promise<void> {
-  const ref = doc(db, "cars", car.id);
-  await setDoc(ref, { ...car, createdAt: serverTimestamp() }, { merge: true });
+export async function fsUpsertCar(_car: Car): Promise<void> {
+  throw new Error("Firestore wurde entfernt. Bitte Strapi verwenden.");
 }

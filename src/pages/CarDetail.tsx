@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
-import { fsGetCar, fsListCars, type Car as FsCar } from "../lib/carsFirestore";
+import { strapiGetCarBySlug, strapiListCars } from "../lib/carsStrapi";
 
 type JsonCar = {
   id: string;
@@ -21,16 +21,16 @@ type JsonCar = {
 
 type Car = JsonCar;
 
-function mergeCars(baseCars: Car[], fsCars: FsCar[]): Car[] {
+function mergeCars(baseCars: Car[], remoteCars: Car[]): Car[] {
   const baseIds = new Set(baseCars.map((c) => c.id));
-  const remoteById = new Map(fsCars.map((c) => [c.id, c] as const));
+  const remoteById = new Map(remoteCars.map((c) => [c.id, c] as const));
 
   const mergedBase = baseCars.map((c) => {
     const remote = remoteById.get(c.id);
     return remote ? ({ ...c, ...(remote as any) } as Car) : c;
   });
 
-  const extras = fsCars
+  const extras = remoteCars
     .filter((c) => !baseIds.has(c.id))
     .map((c) => ({ ...(c as any) } as Car));
 
@@ -47,7 +47,7 @@ export default function CarDetail() {
   const { id } = useParams<{ id: string }>();
 
   const [jsonCars, setJsonCars] = useState<Car[]>([]);
-  const [fsCars, setFsCars] = useState<FsCar[]>([]);
+  const [remoteCars, setRemoteCars] = useState<Car[]>([]);
   const [fallbackCar, setFallbackCar] = useState<Car | null>(null);
 
   const [loading, setLoading] = useState(true);
@@ -68,14 +68,14 @@ export default function CarDetail() {
       setFallbackCar(null);
 
       try {
-        const [base, remote] = await Promise.all([fetchJsonCars(), fsListCars()]);
+        const [base, remote] = await Promise.all([fetchJsonCars(), strapiListCars()]);
         if (!alive) return;
 
         setJsonCars(base);
-        setFsCars(remote);
+        setRemoteCars(remote);
       } catch (e) {
         if (!alive) return;
-        // Wir versuchen trotzdem noch den direkten Firestore-Fallback, falls JSON/Listen-Laden scheitert.
+        // Wir versuchen trotzdem noch den direkten Strapi-Fallback, falls JSON/Listen-Laden scheitert.
         setError(e instanceof Error ? e.message : "Unbekannter Fehler");
       } finally {
         if (!alive) return;
@@ -89,7 +89,7 @@ export default function CarDetail() {
     };
   }, [id]);
 
-  const mergedCars = useMemo(() => mergeCars(jsonCars, fsCars), [jsonCars, fsCars]);
+  const mergedCars = useMemo(() => mergeCars(jsonCars, remoteCars), [jsonCars, remoteCars]);
 
   const carFromMerged = useMemo(() => {
     if (!id) return null;
@@ -104,7 +104,7 @@ export default function CarDetail() {
       if (carFromMerged) return;
 
       try {
-        const c = await fsGetCar(id);
+        const c = await strapiGetCarBySlug(id);
         if (!alive) return;
         setFallbackCar((c as any) ?? null);
       } catch (e) {

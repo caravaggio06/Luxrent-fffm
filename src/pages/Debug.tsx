@@ -34,7 +34,7 @@ export default function Debug() {
         setMerged(res.merged);
 
         console.log("[debug] baseCars", res.base);
-        console.log("[debug] remoteCars", res.remote);
+        console.log("[debug] strapiCars", res.remote);
         console.log("[debug] localCars", res.local);
         console.log("[debug] mergedCars", res.merged);
       } catch (e) {
@@ -97,7 +97,7 @@ export default function Debug() {
         </div>
 
         <div className="rounded-2xl border border-white/10 bg-zinc-900/60 p-5">
-          <div className="font-semibold">remote (Firestore)</div>
+          <div className="font-semibold">remote (Strapi)</div>
           <div className="mt-2 text-sm text-zinc-300">Count: {memo.remote.length}</div>
           <div className="mt-3 text-xs text-zinc-400 break-words">
             {firstIds(memo.remote, 20).join(", ") || "—"}
