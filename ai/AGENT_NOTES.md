@@ -144,3 +144,76 @@ M	src/lib/carsFirestore.ts
 M	src/pages/Debug.tsx
 M	src/pages/Fleet.tsx
 ```
+
+## 2026-01-09 12:45
+
+- Commit: Anbindung FireBase
+
+  Geänderte Dateien:
+```
+M	.gitignore
+M	ai/AGENT_NOTES.md
+M	package-lock.json
+M	package.json
+M	public/data/cars.json
+A	public/images/bmw-m8.webp
+D	public/images/ferrari-296-gtb-poster.jpg
+A	public/images/ferrari.jpg
+D	public/images/lambo-huracan-sto-poster.jpg
+A	public/images/lambo-huracan-sto.webp
+A	public/videos/bmw_m8.mp4
+A	src/lib/firebase.ts
+```
+
+## 2026-01-16 12:08
+
+- Commit: feat: Strapi Car-Collection und car.media-Komponente hinzufügen
+
+Co-authored-by: aider (gpt-5.2) <aider@aider.chat>
+
+  Geänderte Dateien:
+```
+A	backend/strapi/app/src/api/car/content-types/car/schema.json
+A	backend/strapi/app/src/components/car/media.json
+```
+
+## 2026-01-16 12:22
+
+- Commit: refactor: Ersetze Firestore durch Strapi als Car-Datenquelle
+
+Co-authored-by: aider (gpt-5.2) <aider@aider.chat>
+
+  Geänderte Dateien:
+```
+M	src/lib/cars.ts
+M	src/lib/carsFirestore.ts
+A	src/lib/carsStrapi.ts
+M	src/lib/firebase.ts
+M	src/pages/CarDetail.tsx
+M	src/pages/Debug.tsx
+```
+
+## 2026-01-16 12:35
+
+- Commit: refactor: Stelle Car-Loading auf Strapi um und deaktiviere Merge/Firebase
+
+Co-authored-by: aider (gpt-5.2) <aider@aider.chat>
+
+  Geänderte Dateien:
+```
+M	src/lib/cars.ts
+M	src/lib/carsStrapi.ts
+M	src/pages/Debug.tsx
+M	src/pages/Fleet.tsx
+```
+
+## 2026-01-16 13:50
+
+- Commit: fix: Unterstütze Strapi v4/v5 Entities beim Mapping von Autos
+
+Co-authored-by: aider (gpt-5.2) <aider@aider.chat>
+
+  Geänderte Dateien:
+```
+M	src/lib/carsStrapi.ts
+```

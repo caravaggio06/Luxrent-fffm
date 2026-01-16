@@ -1,0 +1,37 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: strapi
+      POSTGRES_PASSWORD: strapi
+      POSTGRES_DB: strapi
+    volumes:
+      - strapi_db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  strapi:
+    image: node:20-alpine
+    working_dir: /srv/app
+    command: sh -lc "if [ ! -f package.json ]; then npx create-strapi-app@latest . --quickstart --no-run; fi && npm run develop"
+    environment:
+      NODE_ENV: development
+      DATABASE_CLIENT: postgres
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      DATABASE_NAME: strapi
+      DATABASE_USERNAME: strapi
+      DATABASE_PASSWORD: strapi
+      DATABASE_SSL: "false"
+      DATABASE_SSL_REJECT_UNAUTHORIZED: "false"
+      HOST: 0.0.0.0
+      PORT: 1337
+    volumes:
+      - ./app:/srv/app
+    ports:
+      - "1337:1337"
+    depends_on:
+      - db
+
+volumes:
+  strapi_db:
