@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink, Navigate, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import FleetPage from "./pages/FleetPage";
@@ -7,6 +7,8 @@ import CreateCarPage from "./pages/CreateCarPage";
 import TermsPage from "./pages/TermsPage";
 import ContactPage from "./pages/ContactPage";
 import Debug from "./pages/Debug";
+import { CarsProvider } from "./context/CarsContext";
+import type { Car } from "./lib/storage";
 
 function NavItem({ to, children }: { to: string; children: React.ReactNode }) {
   return (
@@ -53,69 +55,76 @@ function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return (
-    <Routes>
-      <Route
-        path="/"
-        element={
-          <Layout>
-            <HomePage />
-          </Layout>
-        }
-      />
-      <Route
-        path="/fleet"
-        element={
-          <Layout>
-            <FleetPage />
-          </Layout>
-        }
-      />
-      <Route
-        path="/cars/:id"
-        element={
-          <Layout>
-            <CarDetailPage />
-          </Layout>
-        }
-      />
-      <Route
-        path="/create"
-        element={
-          <Layout>
-            <CreateCarPage />
-          </Layout>
-        }
-      />
-      <Route
-        path="/terms"
-        element={
-          <Layout>
-            <TermsPage />
-          </Layout>
-        }
-      />
-      <Route
-        path="/contact"
-        element={
-          <Layout>
-            <ContactPage />
-          </Layout>
-        }
-      />
+  // Minimaler State für den Context, ohne bestehende Logik anzufassen.
+  // Falls du hier echte Daten einhängen willst, kannst du das später tun.
+  const [cars] = useState<Car[]>([]);
+  const [activeIndex, setActiveIndex] = useState(0);
 
-      {import.meta.env.DEV ? (
+  return (
+    <CarsProvider cars={cars} activeIndex={activeIndex} setActiveIndex={setActiveIndex}>
+      <Routes>
         <Route
-          path="/debug"
+          path="/"
           element={
             <Layout>
-              <Debug />
+              <HomePage />
             </Layout>
           }
         />
-      ) : null}
+        <Route
+          path="/fleet"
+          element={
+            <Layout>
+              <FleetPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/cars/:id"
+          element={
+            <Layout>
+              <CarDetailPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/create"
+          element={
+            <Layout>
+              <CreateCarPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/terms"
+          element={
+            <Layout>
+              <TermsPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/contact"
+          element={
+            <Layout>
+              <ContactPage />
+            </Layout>
+          }
+        />
 
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+        {import.meta.env.DEV ? (
+          <Route
+            path="/debug"
+            element={
+              <Layout>
+                <Debug />
+              </Layout>
+            }
+          />
+        ) : null}
+
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </CarsProvider>
   );
 }
