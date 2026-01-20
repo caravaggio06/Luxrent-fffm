@@ -217,3 +217,53 @@ Co-authored-by: aider (gpt-5.2) <aider@aider.chat>
 ```
 M	src/lib/carsStrapi.ts
 ```
+
+## 2026-01-16 13:52
+
+- Commit: Strapi anbindung
+
+  Geänderte Dateien:
+```
+M	ai/AGENT_NOTES.md
+A	backend/strapi/app/.env.example
+A	backend/strapi/app/.gitignore
+A	backend/strapi/app/README.md
+A	backend/strapi/app/config/admin.ts
+A	backend/strapi/app/config/api.ts
+A	backend/strapi/app/config/database.ts
+A	backend/strapi/app/config/middlewares.ts
+A	backend/strapi/app/config/plugins.ts
+A	backend/strapi/app/config/server.ts
+A	backend/strapi/app/database/migrations/.gitkeep
+A	backend/strapi/app/favicon.png
+A	backend/strapi/app/package-lock.json
+A	backend/strapi/app/package.json
+A	backend/strapi/app/public/robots.txt
+A	backend/strapi/app/public/uploads/.gitkeep
+A	backend/strapi/app/src/admin/app.example.tsx
+A	backend/strapi/app/src/admin/tsconfig.json
+A	backend/strapi/app/src/admin/vite.config.example.ts
+A	backend/strapi/app/src/api/.gitkeep
+A	backend/strapi/app/src/api/car/controllers/car.ts
+A	backend/strapi/app/src/api/car/routes/car.ts
+A	backend/strapi/app/src/api/car/services/car.ts
+A	backend/strapi/app/src/extensions/.gitkeep
+A	backend/strapi/app/src/index.ts
+A	backend/strapi/app/tsconfig.json
+A	backend/strapi/app/types/generated/components.d.ts
+A	backend/strapi/app/types/generated/contentTypes.d.ts
+A	backend/strapi/docker-compose.yml
+```
+
+## 2026-01-19 18:33
+
+- Commit: feat: füge CarsContext ein und nutze ihn in App und CarSwitch
+
+Co-authored-by: aider (gpt-5.1) <aider@aider.chat>
+
+  Geänderte Dateien:
+```
+M	src/App.tsx
+M	src/components/CarSwitch.tsx
+A	src/context/CarsContext.tsx
+```
